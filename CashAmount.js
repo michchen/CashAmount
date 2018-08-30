@@ -41,31 +41,37 @@ class CashAmount {
     // -> { 'hundreds': 9, 'fifties': 1, 'twenties': 0, 'tens': 1, 'fives': 1, 'ones': 2, 'quarters': 3, 'dimes': 1, 'nickels': 1, 'pennies': 3 }
     //     let c = this.amount;
 
-    // let billsAndCoins = [100, 50, 20, 10, 5, 1,0.25, 0.10, 0.05, 0.01];
-    let billsAndCoins = {
-      100: "hundreds",
-      50: "fifties",
-      20: "twenties",
-      10: "tens",
-      5: "fives",
-      1: "ones",
-      0.25: "quarters",
-      0.1: "dimes",
-      0.05: "nickels",
-      0.01: "pennies;"
+    let billsCoins = [10000, 5000, 2000, 1000, 500, 100, 25, 10, 5, 1];
+    let billCoinNames = {
+      10000: "hundreds",
+      5000: "fifties",
+      2000: "twenties",
+      1000: "tens",
+      500: "fives",
+      100: "ones",
+      25: "quarters",
+      10: "dimes",
+      5: "nickels",
+      1: "pennies"
     };
-    //     let names = ['hundreds': 9, 'fifties': 1, 'twenties': 0, 'tens': 1, 'fives': 1, 'ones': 2, 'quarters': 3, 'dimes': 1, 'nickels': 1, 'pennies': 3
-    let quantity = {};
+    let result = {};
 
     var recurse = function(amount, i) {
-      while (amount >= billsAndCoins[i]) {
-        amount = amount - billsAndCoins[i];
+      let num = 0;
+      let curBillOrCoin = billsCoins[i];
+
+      while (amount >= curBillOrCoin) {
+        amount = amount - curBillOrCoin;
+        num++;
       }
-      if (amount < billsAndCoins[i] && i < billsAndCoins.length - 1) {
+      if (amount < curBillOrCoin && i < billsCoins.length) {
+        result[billCoinNames[curBillOrCoin]] = num;
         return recurse(amount, i + 1);
       }
     };
-    recurse(this.amount, 0);
+
+    recurse(this.amount * 100, 0);
+    console.log(result);
   }
 
   toDouble() {
@@ -81,6 +87,6 @@ class CashAmount {
   }
 }
 
-var c = new CashAmount(6.93);
+var c = new CashAmount(967.93);
 
 c.quantityOfEachDenomination();
